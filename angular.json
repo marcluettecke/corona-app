@@ -31,7 +31,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/assets/scss/styles.scss",
+              "src/assets/scss/custom-theme.scss"
             ],
             "scripts": []
           },
@@ -127,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "corona-app"
+  "defaultProject": "corona-app",
+  "cli": {
+    "analytics": "c94b69ae-8112-45f4-a274-eb3732d90f0d"
+  }
 }

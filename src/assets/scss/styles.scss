@@ -1,0 +1,18 @@
+
+@import 'variables';
+@import 'mixins';
+
+/* You can add global styles to this file, and also import other style files */
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
+  font-family: $font-primary;
+}
+html, body { height: 100%;
+  box-sizing: border-box;
+	font-size: 62.5%; // 10px/16px = 62.5% -> 1rem = 10px;
+ }
+
