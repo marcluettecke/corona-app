@@ -1,3 +1,5 @@
+@import 'variables.scss';
+
 mat-sidenav-container,
 mat-sidenav-content,
 mat-sidenav {
@@ -9,5 +11,43 @@ mat-sidenav {
 }
 
 main {
-  padding: 1rem;
+	padding: 1rem;
+}
+
+.navigation-items {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+mat-toolbar {
+	border-radius: 3px;
+}
+
+@media (max-width: 959px) {
+	mat-toolbar {
+		border-radius: 0px;
+	}
+}
+
+.burger-button {
+	transform: translateY(-2px);
+}
+
+.header__links {
+	width: 100%;
+	display: flex;
+	gap: 1.5rem;
+	justify-content: flex-end;
+
+	a {
+		text-decoration: none;
+		color: $dark-font;
+
+		&:active,
+		&:hover {
+			color: lighten($dark-font, 30%);
+			cursor: pointer;
+		}
+	}
 }
