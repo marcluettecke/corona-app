@@ -1,5 +1,5 @@
 // Small devices
-@import 'variables';
+@import '_variables';
 
 @mixin sm {
   @media (max-width: #{$bp-small}) {
