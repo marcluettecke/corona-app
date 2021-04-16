@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
 
 @Component({
@@ -8,14 +9,14 @@ import { DataFetchingService } from 'src/app/core/services/data-fetching.service
 	styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent implements OnInit {
-	weatherData: Observable<any>;
+	weatherData$: Observable<WeatherData>;
 
 	constructor(private dataFetching: DataFetchingService) {}
 
 	ngOnInit() {
-		this.weatherData = this.dataFetching.getWeatherData();
-		this.weatherData.subscribe(data => {
-			console.log(data);
-		});
+		this.weatherData$ = this.dataFetching.weatherData$;
+		// this.weatherData.subscribe(data => {
+		// 	console.log(data);
+		// });
 	}
 }
