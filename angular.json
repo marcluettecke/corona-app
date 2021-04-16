@@ -3,7 +3,7 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"corona-app": {
+		"weather-app": {
 			"projectType": "application",
 			"schematics": {
 				"@schematics/angular:component": {
@@ -20,7 +20,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/corona-app",
+						"outputPath": "dist/weather-app",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"polyfills": "src/polyfills.ts",
@@ -69,18 +69,18 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "corona-app:build"
+						"browserTarget": "weather-app:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "corona-app:build:production"
+							"browserTarget": "weather-app:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "corona-app:build"
+						"browserTarget": "weather-app:build"
 					}
 				},
 				"test": {
@@ -110,18 +110,18 @@
 					"builder": "@angular-devkit/build-angular:protractor",
 					"options": {
 						"protractorConfig": "e2e/protractor.conf.js",
-						"devServerTarget": "corona-app:serve"
+						"devServerTarget": "weather-app:serve"
 					},
 					"configurations": {
 						"production": {
-							"devServerTarget": "corona-app:serve:production"
+							"devServerTarget": "weather-app:serve:production"
 						}
 					}
 				}
 			}
 		}
 	},
-	"defaultProject": "corona-app",
+	"defaultProject": "weather-app",
 	"cli": {
 		"analytics": "c94b69ae-8112-45f4-a274-eb3732d90f0d"
 	}

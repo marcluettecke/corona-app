@@ -3,10 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SummaryComponent } from './summary.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [SummaryComponent],
-  exports: [SummaryComponent]
+	declarations: [SummaryComponent],
+	imports: [CommonModule],
+	exports: [SummaryComponent]
 })
-export class SummaryModule { }
+export class SummaryModule {}
