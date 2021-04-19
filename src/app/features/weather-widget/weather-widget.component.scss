@@ -3,13 +3,6 @@
 	width: 14rem;
 	height: 18rem;
 	font-size: 1rem;
-	// background: rgb(0, 0, 0);
-	// background: linear-gradient(
-	// 	to bottom,
-	// 	rgba(0, 0, 0, 1) 0%,
-	// 	rgba(8, 7, 42, 1) 75%,
-	// 	rgb(8, 10, 63) 100%
-	// );
 
 	display: grid;
 	grid-template-columns: 1fr;
@@ -39,9 +32,6 @@
 	grid-column: 1;
 }
 .sun {
-	// margin-top: 0.3rem;
-	// color: yellow;
-	// filter: drop-shadow(1px 1px 10px yellow);
   animation-name: glowingSun;
 	animation-iteration-count: infinite;
 	animation-duration: 3s;
@@ -115,7 +105,7 @@
 
 
 /* Gradients */
-.sky-gradient-00, .sky-gradient-24 { background: #00000c; }
+.sky-gradient-00, .sky-gradient-24 { background:linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(8,7,42,1) 75%, rgb(8, 10, 63) 100%); }
 .sky-gradient-01 { background: linear-gradient(to bottom, #020111 85%,#191621 100%); }
 .sky-gradient-02 { background: linear-gradient(to bottom, #020111 60%,#20202c 100%); }
 .sky-gradient-03 { background: linear-gradient(to bottom, #020111 10%,#3a3a52 100%); }
@@ -138,4 +128,4 @@
 .sky-gradient-20 { background: linear-gradient(to bottom, #071B26 0%,#071B26 30%,#8A3B12 80%,#240E03 100%); }
 .sky-gradient-21 { background: linear-gradient(to bottom, #010A10 30%,#59230B 80%,#2F1107 100%); }
 .sky-gradient-22 { background: linear-gradient(to bottom, #090401 50%,#4B1D06 100%); }
-.sky-gradient-23 { background: linear-gradient(to bottom, #00000c 80%,#150800 100%); }
+.sky-gradient-23 { background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(8,7,42,1) 75%, rgb(8, 10, 63) 100%); }
