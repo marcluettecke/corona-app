@@ -1,0 +1,13 @@
+.summary-grid {
+	margin-top: 10rem;
+	display: grid;
+	grid-template-rows: min-content 1fr min-content;
+	gap: 2rem;
+	justify-items: center;
+	align-items: center;
+
+	.widges-container {
+		display: flex;
+		flex-wrap: wrap;
+	}
+}

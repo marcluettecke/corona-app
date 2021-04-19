@@ -6,7 +6,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 
-const materialModules = [MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule, MatListModule];
+const materialModules = [
+	MatSidenavModule,
+	MatToolbarModule,
+	MatIconModule,
+	MatButtonModule,
+	MatListModule
+];
 
 @NgModule({
 	imports: [CommonModule, ...materialModules],

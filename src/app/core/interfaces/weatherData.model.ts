@@ -16,7 +16,8 @@ export interface WeatherData {
 				| 'rain'
 				| 'thunderstorm'
 				| 'snow'
-				| 'mist';
+				| 'mist'
+				| 'haze';
 			icon:
 				| '01d'
 				| '02d'
@@ -68,4 +69,6 @@ export interface WeatherData {
 	id: number;
 	name: string;
 	cod: number;
+	sunset_time: string;
+	isDay: boolean;
 }

@@ -17,3 +17,11 @@ html, body { height: 100%;
   background-color: $dark-background;
  }
 
+ .inner-container {
+	display: flex;
+  justify-content: center;
+
+	width: 100%;
+	max-width: 120rem;
+}
+

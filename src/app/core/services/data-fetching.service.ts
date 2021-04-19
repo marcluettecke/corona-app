@@ -11,8 +11,9 @@ import {WeatherData} from '../interfaces/weatherData.model'
 	providedIn: 'root'
 })
 export class DataFetchingService {
-	weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}`).pipe(
-    tap(data => console.log(JSON.stringify(data)),
+	weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}&units=metric`).pipe(
+    // tap(data => console.log(JSON.stringify(data)),
+    tap(data => console.log(data),
     catchError(this.handleError)
     )
   );

@@ -1,0 +1,40 @@
+<div class="widget-grid" [ngClass]="currentLocalHourClass">
+	<span></span>
+	<fa-icon
+		*ngIf="findLocalTime() < 20 && 8 < findLocalTime() && (isClear || isCloudy)"
+		class="icon sun"
+		[icon]="['fas', 'sun']"
+		size="3x"
+	></fa-icon>
+	<fa-icon
+		*ngIf="(findLocalTime() > 20 || findLocalTime() < 8) && (isClear || isCloudy)"
+		class="icon moon"
+		[icon]="['fas', 'moon']"
+		size="3x"
+	></fa-icon>
+	<!-- <h1>{{weatherData$ | async}}</h1> -->
+	<fa-icon *ngIf="isCloudy" class="icon cloud" [icon]="['fas', 'cloud']" size="3x"></fa-icon>
+	<fa-icon *ngIf="isWindy" class="icon wind" [icon]="['fas', 'wind']" size="3x"></fa-icon>
+	<fa-icon
+		*ngIf="isRainy"
+		class="icon cloud-showers"
+		[icon]="['fas', 'cloud-showers-heavy']"
+		size="3x"
+	></fa-icon>
+	<fa-icon
+		*ngIf="isSnowy"
+		class="icon snowflake"
+		[icon]="['fas', 'snowflake']"
+		size="3x"
+	></fa-icon>
+	<div class="temperature">{{ WeatherData.main.temp }}°</div>
+	<div class="temperature-range">
+		{{ WeatherData.main.temp_min }}° / {{ WeatherData.main.temp_max }}°
+	</div>
+	<div class="temperature-feels">Feels Like: {{ WeatherData.main.feels_like }}°</div>
+	<div class="wind-speed">Wind speed: {{ WeatherData.wind.speed }} km/h</div>
+	<div class="name">
+		{{ WeatherData.name }}
+	</div>
+	<div class="humidity" style="font-size: 12px">Humidity: {{ WeatherData.main.humidity }}%</div>
+</div>
