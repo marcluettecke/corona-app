@@ -1,5 +1,7 @@
 <div class="widget-grid" [ngClass]="currentLocalHourClass">
-<!-- <div class="widget-grid" [ngClass]="'sky-gradient-21'"> -->
+	<!-- <ul *ngFor="let cityEl of weatherData$ | async"> -->
+	<!-- <li>{{ cityEl.coord }}</li> -->
+	<!-- </ul> -->
 	<span></span>
 	<fa-icon
 		*ngIf="localTime < 20 && 8 < localTime && (isClear || isCloudy)"

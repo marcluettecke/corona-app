@@ -11,7 +11,7 @@ import { findLocalTime } from '@helper/findLocalTime';
 	styleUrls: ['./weather-widget.component.scss']
 })
 export class WeatherWidgetComponent implements OnInit {
-	weatherData$: Observable<WeatherData>;
+	weatherData$: Observable<WeatherData[]>;
 	weatherData: WeatherData;
   localTime: number;
 	currentLocalHourClass: string;
@@ -22,21 +22,31 @@ export class WeatherWidgetComponent implements OnInit {
 	isWindy: boolean;
 	weatherDescription: string;
 
+  responseData1: any = {};
+  responseData2: any = {};
+  responseData3: any = {};
+
 	constructor(private dataFetchingService: DataFetchingService) {}
 
 	ngOnInit() {
-		this.weatherData$ = this.dataFetchingService.weatherData$;
+    // this.weatherData$ = this.dataFetchingService.getWeatherData();
+
+    this.dataFetchingService.getWeatherData().subscribe(responseList => {
+      this.responseData1 = responseList[0]
+      this.responseData2 = responseList[1]
+      this.responseData3 = responseList[2]
+    })
 
 		this.weatherData = this.dataFetchingService.getDummyWeatherData();
     this.dataFetchingService.cleanWeatherData(this.weatherData)
 
     this.localTime = findLocalTime(this.weatherData.timezone)
 
-    this.setWidgetClasses()
+    this.setWidgetHTMLClasses()
 
 	}
 
-  setWidgetClasses(){
+  setWidgetHTMLClasses(){
 		this.currentLocalHourClass = `sky-gradient-${findLocalTime(this.weatherData.timezone)}`;
 		this.weatherData.weather[0].description == 'clear sky'
 			? (this.isClear = true)
