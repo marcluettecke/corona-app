@@ -1,7 +1,4 @@
 <div class="widget-grid" [ngClass]="currentLocalHourClass">
-	<!-- <ul *ngFor="let cityEl of weatherData$ | async"> -->
-	<!-- <li>{{ cityEl.coord }}</li> -->
-	<!-- </ul> -->
 	<span></span>
 	<fa-icon
 		*ngIf="localTime < 20 && 8 < localTime && (isClear || isCloudy)"
@@ -30,14 +27,14 @@
 		[icon]="['fas', 'snowflake']"
 		size="3x"
 	></fa-icon>
-	<div class="temperature">{{ weatherData.main.temp }}°</div>
+	<div class="temperature">{{ responseData.main.temp }}°</div>
 	<div class="temperature-range">
-		{{ weatherData.main.temp_min }}° / {{ weatherData.main.temp_max }}°
+		{{ responseData.main.temp_min }}° / {{ responseData.main.temp_max }}°
 	</div>
-	<div class="temperature-feels">Feels Like: {{ weatherData.main.feels_like }}°</div>
-	<div class="wind-speed">Wind speed: {{ weatherData.wind.speed }} km/h</div>
+	<div class="temperature-feels">Feels Like: {{ responseData.main.feels_like }}°</div>
+	<div class="wind-speed">Wind speed: {{ responseData.wind.speed }} km/h</div>
 	<div class="name">
-		{{ weatherData.name }}
+		{{ responseData.name }}
 	</div>
-	<div class="humidity" style="font-size: 12px">Humidity: {{ weatherData.main.humidity }}%</div>
+	<div class="humidity" style="font-size: 12px">Humidity: {{ responseData.main.humidity }}%</div>
 </div>

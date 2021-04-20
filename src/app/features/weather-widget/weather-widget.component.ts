@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
@@ -22,48 +22,40 @@ export class WeatherWidgetComponent implements OnInit {
 	isWindy: boolean;
 	weatherDescription: string;
 
-  responseData1: any = {};
-  responseData2: any = {};
-  responseData3: any = {};
+  @Input() responseData: any = {};
 
 	constructor(private dataFetchingService: DataFetchingService) {}
 
 	ngOnInit() {
     // this.weatherData$ = this.dataFetchingService.getWeatherData();
 
-    this.dataFetchingService.getWeatherData().subscribe(responseList => {
-      this.responseData1 = responseList[0]
-      this.responseData2 = responseList[1]
-      this.responseData3 = responseList[2]
-    })
 
-		this.weatherData = this.dataFetchingService.getDummyWeatherData();
-    this.dataFetchingService.cleanWeatherData(this.weatherData)
 
-    this.localTime = findLocalTime(this.weatherData.timezone)
-
+		// this.weatherData = this.dataFetchingService.getDummyWeatherData();
+    this.dataFetchingService.cleanWeatherData(this.responseData)
+    this.localTime = findLocalTime(this.responseData.timezone)
     this.setWidgetHTMLClasses()
 
 	}
 
   setWidgetHTMLClasses(){
-		this.currentLocalHourClass = `sky-gradient-${findLocalTime(this.weatherData.timezone)}`;
-		this.weatherData.weather[0].description == 'clear sky'
+		this.currentLocalHourClass = `sky-gradient-${findLocalTime(this.responseData.timezone)}`;
+		this.responseData.weather[0].description == 'clear sky'
 			? (this.isClear = true)
 			: (this.isClear = false);
-		['few clouds', 'scattered clouds', 'haze'].includes(this.weatherData.weather[0].description)
+		['few clouds', 'scattered clouds', 'haze'].includes(this.responseData.weather[0].description)
 			? (this.isCloudy = true)
 			: (this.isCloudy = false);
 		['broken clouds', 'shower rain', 'rain', 'thunderstorm'].includes(
-			this.weatherData.weather[0].description
+			this.responseData.weather[0].description
 		)
 			? (this.isRainy = true)
 			: (this.isRainy = false);
-		['snow', 'mist'].includes(this.weatherData.weather[0].description)
+		['snow', 'mist'].includes(this.responseData.weather[0].description)
 			? (this.isSnowy = true)
 			: (this.isSnowy = false);
-		this.weatherData.wind.speed > 8 ? (this.isWindy = true) : (this.isWindy = false);
-		this.weatherDescription = this.weatherData.weather[0].description;
+		this.responseData.wind.speed > 8 ? (this.isWindy = true) : (this.isWindy = false);
+		this.weatherDescription = this.responseData.weather[0].description;
   }
 
 }

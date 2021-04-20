@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable, throwError, of } from 'rxjs';
+import { catchError, mergeMap, tap, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { WeatherData } from '../interfaces/weatherData.model';
@@ -12,6 +12,8 @@ import { WeatherData } from '../interfaces/weatherData.model';
 export class DataFetchingService {
 	citiesObservable$: Observable<string>;
 	cities: string[];
+
+  data: Observable<WeatherData[]>;
 	// weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}&units=metric`).pipe(
 	weatherData$ = this.http
 		.get<WeatherData>(
@@ -23,38 +25,46 @@ export class DataFetchingService {
 		);
 
 	constructor(private http: HttpClient) {
-		this.getCities();
+		this.cities = ['Landau', 'Cologne', 'Munich']
 	}
 
 	getCities() {
-		this.citiesObservable$ = this.http.get<string>('../../../assets/data/cities_clean.txt', {
+		return this.http.get<string>('../../../assets/data/cities_clean.txt', {
 			responseType: 'text' as 'json'
 		});
 	}
 
 	getWeatherData(): Observable<WeatherData[]> {
-		let joinedData$: Observable<WeatherData>;
-		// let data$: Observable<WeatherData>[] = [];
-		// this.citiesObservable$.subscribe(citiesLoaded => {
-		// 	this.cities = citiesLoaded.split(',');
-		// 	data$ = this.cities.map(city => {
-		// 		return this.getWeatherCity(city);
-		// 	});
-		// 	// data$.map(el => {
-		// 	// 	console.log(el.subscribe(elData => console.log(elData)));
-		// 	// });
+		// let response1 = this.getWeatherCity('Landau');
+		// let response2 = this.getWeatherCity('Hamm');
+		// let response3 = this.getWeatherCity('Munich');
+
+		// response1.subscribe(data => {
+		// 	console.log(data);
 		// });
-		// console.log(forkJoin(data$).subscribe(elements => console.log(elements)));
+    let data: Observable<WeatherData[]> = of();
+    let responses$: Observable<WeatherData>[] = []
+      this.cities.map(city => {
+        responses$.push(this.getWeatherCity(city))
+      })
+      data = forkJoin(responses$)
 
-		let response1 = this.getWeatherCity('Landau');
-		let response2 = this.getWeatherCity('Hamm');
-		let response3 = this.getWeatherCity('Munich');
+    return data
 
-		response1.subscribe(data => {
-			console.log(data);
-		});
+    // .subscribe(cityList => {
+		// 	this.cities = cityList.split(',');
+    //   console.log(this.cities);
 
-		return forkJoin([response1, response2, response3]);
+		// 	this.cities.map(el => {
+		// 		this.dataArray.push(this.getWeatherCity(el));
+		// 	});
+
+    //   data = forkJoin(this.dataArray)
+    //   console.log(data);
+
+		// });
+    // return data
+		// return forkJoin([response1, response2, response3]);
 	}
 
 	getWeatherCity(city: string): Observable<WeatherData> {

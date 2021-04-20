@@ -6,8 +6,9 @@
 	justify-items: center;
 	align-items: center;
 
-	.widges-container {
+	.widges-container > div  {
 		display: flex;
 		flex-wrap: wrap;
+    gap: 5rem;
 	}
 }
