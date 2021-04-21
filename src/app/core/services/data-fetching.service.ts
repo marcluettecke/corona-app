@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, throwError, of } from 'rxjs';
-import { catchError, mergeMap, tap, map } from 'rxjs/operators';
+import { forkJoin, Observable, throwError, of, Subject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { WeatherData } from '../interfaces/weatherData.model';
@@ -12,6 +12,7 @@ import { WeatherData } from '../interfaces/weatherData.model';
 export class DataFetchingService {
 	citiesObservable$: Observable<string>;
 	cities: string[];
+  weatherDataChanged = new Subject<WeatherData[]>();
 
 	data: Observable<WeatherData[]>;
 	// weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}&units=metric`).pipe(
@@ -57,10 +58,11 @@ export class DataFetchingService {
 	}
 
 	getDummyWeatherData() {
-		let data = this.http.get('../../../assets/data/data_dummy.json')
-    console.log(data);
-
-		return data;
+		this.http.get('../../../assets/data/data_dummy.json').subscribe(
+      (data: any) => {
+        this.weatherDataChanged.next(data)
+      }
+    )
 	}
 
 	cleanWeatherData(data: WeatherData) {
