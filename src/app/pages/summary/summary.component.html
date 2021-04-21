@@ -3,10 +3,10 @@
 		<h1>Your Cities</h1>
 		<div class="widges-container">
 			<div *ngIf="WeatherDataFork$ | async">
-				<app-weather-widget
+				<!-- <app-weather-widget
 					*ngFor="let city of responseList; let i = index"
 					[responseData]="responseList[i]"
-				></app-weather-widget>
+				></app-weather-widget> -->
 			</div>
 		</div>
 		<p>Add more cities</p>

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
 
@@ -11,9 +10,7 @@ import { findLocalTime } from '@helper/findLocalTime';
 	styleUrls: ['./weather-widget.component.scss']
 })
 export class WeatherWidgetComponent implements OnInit {
-	weatherData$: Observable<WeatherData[]>;
-	weatherData: WeatherData;
-  localTime: number;
+  localTime: string | number;
 	currentLocalHourClass: string;
 	isClear: boolean;
 	isCloudy: boolean;
@@ -22,20 +19,14 @@ export class WeatherWidgetComponent implements OnInit {
 	isWindy: boolean;
 	weatherDescription: string;
 
-  @Input() responseData: any = {};
+  @Input() responseData: WeatherData;
 
 	constructor(private dataFetchingService: DataFetchingService) {}
 
 	ngOnInit() {
-    // this.weatherData$ = this.dataFetchingService.getWeatherData();
-
-
-
-		// this.weatherData = this.dataFetchingService.getDummyWeatherData();
     this.dataFetchingService.cleanWeatherData(this.responseData)
     this.localTime = findLocalTime(this.responseData.timezone)
     this.setWidgetHTMLClasses()
-
 	}
 
   setWidgetHTMLClasses(){

@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SummaryModule } from './pages/summary/summary.module';
+import { DataDisplayModule } from './pages/data-display/data-display.module';
 
 
 
@@ -27,6 +28,7 @@ import { SummaryModule } from './pages/summary/summary.module';
     FlexLayoutModule,
     HttpClientModule,
     SummaryModule,
+    DataDisplayModule,
     CoreModule
   ],
   bootstrap: [AppComponent]

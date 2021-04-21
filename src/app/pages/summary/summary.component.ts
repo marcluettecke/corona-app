@@ -16,20 +16,12 @@ export class SummaryComponent implements OnInit {
 	responseData3: any = {};
 
 	constructor(private dataFetching: DataFetchingService) {
-    this.WeatherDataFork$ = this.dataFetching.getWeatherData();
-  }
+		this.WeatherDataFork$ = this.dataFetching.getWeatherData();
+	}
 
 	ngOnInit() {
-
-
 		this.dataFetching.getWeatherData().subscribe(responseList => {
-			// this.responseData1 = responseList[0]
-			// this.responseData2 = responseList[1]
-			// this.responseData3 = responseList[2]
 			this.responseList = responseList;
-      console.log(this.responseList[0]);
-
-
 		});
 	}
 }
