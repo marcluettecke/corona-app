@@ -12,7 +12,7 @@ import { WeatherData } from '../interfaces/weatherData.model';
 export class DataFetchingService {
 	citiesObservable$: Observable<string>;
 	cities: string[];
-  weatherDataChanged = new Subject<WeatherData[]>();
+	weatherDataChanged = new Subject<WeatherData[]>();
 
 	data: Observable<WeatherData[]>;
 	// weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}&units=metric`).pipe(
@@ -26,7 +26,8 @@ export class DataFetchingService {
 		);
 
 	constructor(private http: HttpClient) {
-		this.cities = ['Landau', 'Cologne', 'Munich', 'Tokyo', 'Sydney', 'New York'];
+		// this.cities = ['Landau', 'Cologne', 'Munich', 'Tokyo', 'Sydney', 'New York'];
+		this.cities = ['Landau'];
 	}
 
 	getCities() {
@@ -58,11 +59,9 @@ export class DataFetchingService {
 	}
 
 	getDummyWeatherData() {
-		this.http.get('../../../assets/data/data_dummy.json').subscribe(
-      (data: any) => {
-        this.weatherDataChanged.next(data)
-      }
-    )
+		this.http.get('../../../assets/data/data_dummy.json').subscribe((data: any) => {
+			this.weatherDataChanged.next(data);
+		});
 	}
 
 	cleanWeatherData(data: WeatherData) {
@@ -73,6 +72,10 @@ export class DataFetchingService {
 		cleanData.main.feels_like = +data.main.feels_like.toFixed(0);
 		console.log(cleanData);
 		return cleanData;
+	}
+
+	addCity(city: string) {
+		this.cities.push(city);
 	}
 
 	private handleError(err: any): Observable<never> {
@@ -87,5 +90,3 @@ export class DataFetchingService {
 		return throwError(errorMessage);
 	}
 }
-
-

@@ -1,8 +1,8 @@
 <mat-form-field>
-  <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter" />
+	<input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter" />
 </mat-form-field>
 <mat-table [dataSource]="dataSource" matSort>
-	<ng-container matColumnDef="date">
+	<ng-container matColumnDef="dt">
 		<mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.dt * 1000 | date }}</mat-cell>
 	</ng-container>
@@ -12,17 +12,22 @@
 		<mat-cell *matCellDef="let element">{{ element.name }}</mat-cell>
 	</ng-container>
 
-	<ng-container matColumnDef="min-temp">
-		<mat-header-cell *matHeaderCellDef mat-sort-header>Min Temp</mat-header-cell>
+	<ng-container matColumnDef="temp">
+		<mat-header-cell *matHeaderCellDef mat-sort-header>Temp.</mat-header-cell>
+		<mat-cell *matCellDef="let element">{{ element.main.temp }}</mat-cell>
+	</ng-container>
+
+	<ng-container matColumnDef="temp_min">
+		<mat-header-cell *matHeaderCellDef mat-sort-header>Min. Temp.</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.main.temp_min }}</mat-cell>
 	</ng-container>
 
-	<ng-container matColumnDef="max-temp">
-		<mat-header-cell *matHeaderCellDef mat-sort-header>Max Temp</mat-header-cell>
+	<ng-container matColumnDef="temp_max">
+		<mat-header-cell *matHeaderCellDef mat-sort-header>Max. Temp.</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.main.temp_max }}</mat-cell>
 	</ng-container>
 
-	<ng-container matColumnDef="wind">
+	<ng-container matColumnDef="wind_speed">
 		<mat-header-cell *matHeaderCellDef mat-sort-header>Wind Speed</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.wind.speed }}</mat-cell>
 	</ng-container>
@@ -33,6 +38,14 @@
 	<ng-container matColumnDef="humidity">
 		<mat-header-cell *matHeaderCellDef mat-sort-header>Humidity</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.main.humidity }}</mat-cell>
+	</ng-container>
+	<ng-container matColumnDef="add">
+		<mat-header-cell *matHeaderCellDef>Add to Summary</mat-header-cell>
+		<mat-cell *matCellDef="let row">
+			<button mat-icon-button (click)="onAddCityClick(row)" color="primary">
+				<mat-icon>add_circle</mat-icon>
+			</button>
+		</mat-cell>
 	</ng-container>
 
 	<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

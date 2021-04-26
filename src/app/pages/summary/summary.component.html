@@ -1,14 +1,28 @@
 <div class="inner-container">
 	<div class="summary-grid">
 		<h1>Your Cities</h1>
-		<div class="widges-container">
-			<div *ngIf="WeatherDataFork$ | async">
-				<!-- <app-weather-widget
-					*ngFor="let city of responseList; let i = index"
-					[responseData]="responseList[i]"
-				></app-weather-widget> -->
-			</div>
-		</div>
+		<mat-tab-group>
+			<mat-tab label="Today">
+				<div class="widges-container">
+					<div *ngIf="WeatherDataFork$ | async">
+						<app-weather-widget
+							*ngFor="let city of responseList; let i = index"
+							[responseData]="responseList[i]"
+						></app-weather-widget>
+					</div>
+				</div>
+			</mat-tab>
+			<mat-tab label="Forecast">
+				<div class="widges-container">
+					<div *ngIf="WeatherDataFork$ | async">
+						<!-- <app-weather-widget
+							*ngFor="let city of responseList; let i = index"
+							[responseData]="responseList[i]"
+						></app-weather-widget> -->
+					</div>
+				</div>
+			</mat-tab>
+		</mat-tab-group>
 		<p>Add more cities</p>
 	</div>
 </div>

@@ -13,22 +13,43 @@ import { DataFetchingService } from 'src/app/core/services/data-fetching.service
 })
 export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	displayedColumns = [
-		'date',
+		'dt',
 		'name',
-		'min-temp',
-		'max-temp',
-		'wind',
+		'temp',
+		'temp_min',
+		'temp_max',
+		'wind_speed',
 		'pressure',
-		'humidity'
+		'humidity',
+		'add'
 	];
 	private weatherDataChangedSubscription: Subscription;
 	dataSource = new MatTableDataSource<WeatherData>();
-  @ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 
 	constructor(private fetchingService: DataFetchingService) {}
 
 	ngOnInit() {
+		this.dataSource.sortingDataAccessor = (item: WeatherData, property: string) => {
+			switch (property) {
+				case 'temp':
+					return item.main.temp;
+				case 'temp_min':
+					return item.main.temp_min;
+				case 'temp_max':
+					return item.main.temp_max;
+				case 'wind_speed':
+					return item.wind.speed;
+				case 'pressure':
+					return item.main.pressure;
+				case 'humidity':
+					return item.main.humidity;
+				default:
+					return item.main.temp;
+			}
+		};
+
 		this.weatherDataChangedSubscription = this.fetchingService.weatherDataChanged.subscribe(
 			(data: WeatherData[]) => {
 				this.dataSource.data = data;
@@ -37,16 +58,20 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.fetchingService.getDummyWeatherData();
 	}
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
+	ngAfterViewInit() {
+		this.dataSource.sort = this.sort;
+		this.dataSource.paginator = this.paginator;
+	}
 
-  doFilter(filterValue: string) {
+	doFilter(filterValue: string) {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-  ngOnDestroy() {
-    this.weatherDataChangedSubscription.unsubscribe();
-  }
+	onAddCityClick(row: WeatherData) {
+		this.fetchingService.addCity(row.name);
+	}
+
+	ngOnDestroy() {
+		this.weatherDataChangedSubscription.unsubscribe();
+	}
 }

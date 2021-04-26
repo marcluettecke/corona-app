@@ -34,7 +34,7 @@ export class WeatherWidgetComponent implements OnInit {
 		this.responseData.weather[0].description == 'clear sky'
 			? (this.isClear = true)
 			: (this.isClear = false);
-		['few clouds', 'scattered clouds', 'haze'].includes(this.responseData.weather[0].description)
+		['few clouds', 'scattered clouds', 'haze', 'overcast clouds'].includes(this.responseData.weather[0].description)
 			? (this.isCloudy = true)
 			: (this.isCloudy = false);
 		['broken clouds', 'shower rain', 'rain', 'thunderstorm'].includes(
