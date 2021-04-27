@@ -23,17 +23,19 @@
 				mat-icon-button
 				(click)="drawer.toggle()"
 				*ngIf="isHandset$ | async"
-        class="burger-button"
+				class="burger-button"
 			>
 				<mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
 			</button>
 			<span>WeathData</span>
 			<div class="header__links" *ngIf="!(isHandset$ | async)">
-				<a mat-list-item routerLink="/summary">Summary</a>
-				<a mat-list-item routerLink="/data">Data</a>
-				<a mat-list-item routerLink="/visualization">Visualization</a>
+				<a mat-list-item routerLink="/summary" routerLinkActive="mat-accent">Summary</a>
+				<a mat-list-item routerLink="/data" routerLinkActive="mat-accent">Data</a>
+				<a mat-list-item routerLink="/visualization" routerLinkActive="mat-accent"
+					>Visualization</a
+				>
 			</div>
 		</mat-toolbar>
-		<router-outlet></router-outlet>
+		<router-outlet (click)="drawer.close()"></router-outlet>
 	</mat-sidenav-content>
 </mat-sidenav-container>

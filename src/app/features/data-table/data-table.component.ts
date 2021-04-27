@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { Subscription } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'app-data-table',
@@ -12,6 +13,7 @@ import { DataFetchingService } from 'src/app/core/services/data-fetching.service
 	styleUrls: ['./data-table.component.scss']
 })
 export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
+	cities: string[] = [];
 	displayedColumns = [
 		'dt',
 		'name',
@@ -53,6 +55,7 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.weatherDataChangedSubscription = this.fetchingService.weatherDataChanged.subscribe(
 			(data: WeatherData[]) => {
 				this.dataSource.data = data;
+				this.cities = this.fetchingService.cities;
 			}
 		);
 		this.fetchingService.getDummyWeatherData();
@@ -68,7 +71,15 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	onAddCityClick(row: WeatherData) {
-		this.fetchingService.addCity(row.name);
+		if (this.cities.includes(row.name)) {
+			Swal.fire(
+				'Cannot add city!',
+				'You have already included the city in your summary, check it out!',
+				'error'
+			);
+		} else {
+			this.fetchingService.addCity(row.name);
+		}
 	}
 
 	ngOnDestroy() {

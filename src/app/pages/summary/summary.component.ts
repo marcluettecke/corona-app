@@ -1,6 +1,7 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
+import { Router } from '@angular/router';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class SummaryComponent implements OnInit {
 	responseData2: any = {};
 	responseData3: any = {};
 
-	constructor(private dataFetching: DataFetchingService) {
+	constructor(private dataFetching: DataFetchingService, private router: Router) {
 		this.WeatherDataFork$ = this.dataFetching.getWeatherData();
 	}
 
@@ -23,5 +24,9 @@ export class SummaryComponent implements OnInit {
 		this.dataFetching.getWeatherData().subscribe(responseList => {
 			this.responseList = responseList;
 		});
+	}
+
+	onAddButtonClick() {
+		this.router.navigateByUrl('/data');
 	}
 }

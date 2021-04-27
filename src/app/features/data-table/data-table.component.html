@@ -43,7 +43,8 @@
 		<mat-header-cell *matHeaderCellDef>Add to Summary</mat-header-cell>
 		<mat-cell *matCellDef="let row">
 			<button mat-icon-button (click)="onAddCityClick(row)" color="primary">
-				<mat-icon>add_circle</mat-icon>
+				<mat-icon *ngIf="!cities.includes(row.name); else elseBlock">add_circle</mat-icon>
+				<ng-template #elseBlock><mat-icon>check</mat-icon></ng-template>
 			</button>
 		</mat-cell>
 	</ng-container>
