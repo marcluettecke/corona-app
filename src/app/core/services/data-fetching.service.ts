@@ -1,18 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, throwError, of, Subject } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { forkJoin, Observable, throwError, of, Subject, Subscription } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { WeatherData } from '../interfaces/weatherData.model';
+import { User } from '../interfaces/user.model';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DataFetchingService {
-	citiesObservable$: Observable<string>;
 	cities: string[];
+	citiesChanged = new Subject<User[]>();
+	testCities: Observable<string[]>;
 	weatherDataChanged = new Subject<WeatherData[]>();
+	private fbSubs: Subscription[] = [];
 
 	data: Observable<WeatherData[]>;
 	// weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}&units=metric`).pipe(
@@ -25,9 +29,15 @@ export class DataFetchingService {
 			tap(data => console.log(data), catchError(this.handleError))
 		);
 
-	constructor(private http: HttpClient) {
+	constructor(private http: HttpClient, private db: AngularFirestore) {
+		this.cities = [];
 		// this.cities = ['Landau', 'Cologne', 'Munich', 'Tokyo', 'Sydney', 'New York'];
-		this.cities = ['Landau'];
+		// this.db
+		// 	.collection('users')
+		// 	.valueChanges()
+		// 	.subscribe((data: any) => {
+		// 		this.cities.next(data[0].cities);
+		// 	});
 	}
 
 	getCities() {
@@ -36,14 +46,27 @@ export class DataFetchingService {
 		});
 	}
 
-	getWeatherData(): Observable<WeatherData[]> {
+	fetchCities() {
+		// this.cities = [];
+		this.fbSubs.push(
+			this.db
+				.collection('users')
+				.valueChanges()
+				.subscribe((users: any) => {
+					this.citiesChanged.next(users);
+					// this.cities.push(...users[0].cities);
+					// console.log(this.cities);
+				})
+		);
+	}
+	getWeatherData(cities: any): Observable<WeatherData[]> {
 		let data: Observable<WeatherData[]> = of();
 		let responses$: Observable<WeatherData>[] = [];
-		this.cities.map(city => {
+		this.fetchCities();
+		cities.map((city: string) => {
 			responses$.push(this.getWeatherCity(city));
 		});
 		data = forkJoin(responses$);
-
 		return data;
 	}
 
@@ -70,12 +93,12 @@ export class DataFetchingService {
 		cleanData.main.temp_min = +data.main.temp_min.toFixed(0);
 		cleanData.main.temp_max = +data.main.temp_max.toFixed(0);
 		cleanData.main.feels_like = +data.main.feels_like.toFixed(0);
-		console.log(cleanData);
+		// console.log(cleanData);
 		return cleanData;
 	}
 
 	addCity(city: string) {
-		this.cities.push(city);
+		// this.cities.push(city);
 	}
 
 	private handleError(err: any): Observable<never> {
@@ -88,5 +111,9 @@ export class DataFetchingService {
 		}
 		console.error(err);
 		return throwError(errorMessage);
+	}
+
+	cancelSubscriptions() {
+		this.fbSubs.forEach(sub => sub.unsubscribe());
 	}
 }

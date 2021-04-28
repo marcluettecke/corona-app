@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ng-weather-app-6f1dd": {
+      "hosting": {
+        "weather-app": [
+          "ng-weather-app-6f1dd"
+        ]
+      }
+    }
+  }
+}
