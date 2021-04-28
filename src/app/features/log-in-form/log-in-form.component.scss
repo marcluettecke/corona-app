@@ -1,0 +1,12 @@
+.log-in_form {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	margin-top: 20vh;
+	width: 30vw;
+
+	button {
+		margin: 0 auto;
+		width: 50%;
+	}
+}

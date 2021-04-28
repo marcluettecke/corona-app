@@ -13,6 +13,8 @@
 			<a mat-list-item routerLink="/summary">Summary</a>
 			<a mat-list-item routerLink="/data">Data</a>
 			<a mat-list-item routerLink="/visualization">Visualization</a>
+			<a mat-list-item routerLink="/log-in">Log in</a>
+			<a mat-list-item routerLink="/sign-up">Sign up</a>
 		</mat-nav-list>
 	</mat-sidenav>
 	<mat-sidenav-content>
@@ -34,6 +36,8 @@
 				<a mat-list-item routerLink="/visualization" routerLinkActive="mat-accent"
 					>Visualization</a
 				>
+				<a mat-list-item routerLink="/log-in">Log in</a>
+				<a mat-list-item routerLink="/sign-up">Sign up</a>
 			</div>
 		</mat-toolbar>
 		<router-outlet (click)="drawer.close()"></router-outlet>

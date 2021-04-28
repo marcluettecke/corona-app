@@ -1,0 +1,21 @@
+<section>
+	<form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="log-in_form">
+		<mat-form-field hintLabel="Please enter your login-email">
+			<input type="email" placeholder="Your email" matInput formControlName="email" />
+			<mat-error>Invalid or missing email</mat-error>
+		</mat-form-field>
+		<mat-form-field hintLabel="Please enter your password">
+			<input
+				type="password"
+				placeholder="Your password"
+				matInput
+				formControlName="password"
+			/>
+			<mat-error>Invalid or missing password</mat-error>
+		</mat-form-field>
+		<button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">
+			Submit
+		</button>
+		<!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
+	</form>
+</section>
