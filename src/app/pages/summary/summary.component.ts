@@ -1,8 +1,10 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { Observable, of, Subscription } from 'rxjs';
+import { forkJoin, Observable, of, Subscription } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { Router } from '@angular/router';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
+import { User } from '../../core/interfaces/user.model';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-summary',
@@ -10,32 +12,34 @@ import { DataFetchingService } from 'src/app/core/services/data-fetching.service
 	styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent implements OnInit, OnDestroy {
-	WeatherDataFork$: Observable<WeatherData[]>;
+	WeatherData$: Observable<WeatherData[]>;
 	cities: string[];
 	responseList: WeatherData[];
-	private citiesChangedSubscription: Subscription;
+	private dataFetchingSubscription: Subscription;
 
-	constructor(private dataFetching: DataFetchingService, private router: Router) {
-		this.WeatherDataFork$ = this.dataFetching.getWeatherData(this.cities);
-	}
+	constructor(private dataservice: DataFetchingService, private router: Router) {}
 
 	ngOnInit() {
-		this.citiesChangedSubscription = this.dataFetching.citiesChanged.subscribe(users => {
-			this.dataFetching.getWeatherData(users[0].cities).subscribe(weatherData => {
-				this.responseList = weatherData;
+		this.dataFetchingSubscription = this.dataservice
+			.fetchCities('marc.luettecke1@gmail.com')
+			.pipe(
+				mergeMap((userDataArray: User[]) => {
+					const weatherData = userDataArray[0].cities!.map(city =>
+						this.dataservice.getWeatherCity(city)
+					);
+					return forkJoin(weatherData);
+				})
+			)
+			.subscribe(data => {
+				this.responseList = data;
 			});
-		});
-		// this.dataFetching.fetchCities();
-		// this.dataFetching.getWeatherData().subscribe(data => {
-		// 	this.responseList = data;
-		// });
 	}
 
 	onAddButtonClick() {
 		this.router.navigateByUrl('/data');
 	}
 
-	ngOnDestroy(): void {
-		this.citiesChangedSubscription.unsubscribe();
+	ngOnDestroy() {
+		this.dataFetchingSubscription.unsubscribe();
 	}
 }

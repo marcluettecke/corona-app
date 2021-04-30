@@ -2,10 +2,12 @@ import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
+import { User } from 'src/app/core/interfaces/user.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
 import Swal from 'sweetalert2';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-data-table',
@@ -25,12 +27,13 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 		'humidity',
 		'add'
 	];
-	private weatherDataChangedSubscription: Subscription;
+	private allCitiesChangedSubscription: Subscription;
+	private userCitiesChangedSubscription: Subscription;
 	dataSource = new MatTableDataSource<WeatherData>();
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 
-	constructor(private fetchingService: DataFetchingService) {}
+	constructor(private dataservice: DataFetchingService) {}
 
 	ngOnInit() {
 		this.dataSource.sortingDataAccessor = (item: WeatherData, property: string) => {
@@ -52,13 +55,26 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		};
 
-		this.weatherDataChangedSubscription = this.fetchingService.weatherDataChanged.subscribe(
-			(data: WeatherData[]) => {
+		this.userCitiesChangedSubscription = this.dataservice
+			.fetchCities('marc.luettecke1@gmail.com')
+			.subscribe((data: User[]) => {
+				data.map((el: User) => {
+					this.cities.push(...el.cities!);
+				});
+			});
+		this.allCitiesChangedSubscription = this.dataservice
+			.fetchCities('all_cities')
+			.pipe(
+				mergeMap((userDataArray: User[]) => {
+					const weatherData = userDataArray[0].cities!.map(city =>
+						this.dataservice.getWeatherCity(city)
+					);
+					return forkJoin(weatherData);
+				})
+			)
+			.subscribe(data => {
 				this.dataSource.data = data;
-				this.cities = this.fetchingService.cities;
-			}
-		);
-		this.fetchingService.getDummyWeatherData();
+			});
 	}
 
 	ngAfterViewInit() {
@@ -78,11 +94,12 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 				'error'
 			);
 		} else {
-			this.fetchingService.addCity(row.name);
+			this.dataservice.addCity(row.name);
 		}
 	}
 
 	ngOnDestroy() {
-		this.weatherDataChangedSubscription.unsubscribe();
+		this.allCitiesChangedSubscription.unsubscribe();
+		this.userCitiesChangedSubscription.unsubscribe();
 	}
 }

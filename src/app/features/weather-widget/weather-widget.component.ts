@@ -10,7 +10,7 @@ import { findLocalTime } from '@helper/findLocalTime';
 	styleUrls: ['./weather-widget.component.scss']
 })
 export class WeatherWidgetComponent implements OnInit {
-  localTime: string | number;
+	localTime: string | number;
 	currentLocalHourClass: string;
 	isClear: boolean;
 	isCloudy: boolean;
@@ -19,22 +19,24 @@ export class WeatherWidgetComponent implements OnInit {
 	isWindy: boolean;
 	weatherDescription: string;
 
-  @Input() responseData: WeatherData;
+	@Input() responseData: WeatherData;
 
 	constructor(private dataFetchingService: DataFetchingService) {}
 
 	ngOnInit() {
-    this.dataFetchingService.cleanWeatherData(this.responseData)
-    this.localTime = findLocalTime(this.responseData.timezone)
-    this.setWidgetHTMLClasses()
+		this.dataFetchingService.cleanWeatherData(this.responseData);
+		this.localTime = findLocalTime(this.responseData.timezone);
+		this.setWidgetHTMLClasses();
 	}
 
-  setWidgetHTMLClasses(){
+	setWidgetHTMLClasses() {
 		this.currentLocalHourClass = `sky-gradient-${findLocalTime(this.responseData.timezone)}`;
 		this.responseData.weather[0].description == 'clear sky'
 			? (this.isClear = true)
 			: (this.isClear = false);
-		['few clouds', 'scattered clouds', 'haze', 'overcast clouds'].includes(this.responseData.weather[0].description)
+		['few clouds', 'scattered clouds', 'haze', 'overcast clouds', 'light rain'].includes(
+			this.responseData.weather[0].description
+		)
 			? (this.isCloudy = true)
 			: (this.isCloudy = false);
 		['broken clouds', 'shower rain', 'rain', 'thunderstorm'].includes(
@@ -47,6 +49,5 @@ export class WeatherWidgetComponent implements OnInit {
 			: (this.isSnowy = false);
 		this.responseData.wind.speed > 8 ? (this.isWindy = true) : (this.isWindy = false);
 		this.weatherDescription = this.responseData.weather[0].description;
-  }
-
+	}
 }

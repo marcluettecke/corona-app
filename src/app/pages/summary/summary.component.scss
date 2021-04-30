@@ -6,7 +6,7 @@
 	justify-items: center;
 	align-items: center;
 
-	.widges-container > div {
+	.widges-container {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 5rem;
@@ -14,7 +14,7 @@
 
 	.mat-tab-group {
 		display: grid;
-    grid-template-rows: repeat(2, min-content);
-    gap: 2rem;
-  }
+		grid-template-rows: repeat(2, min-content);
+		gap: 2rem;
+	}
 }
