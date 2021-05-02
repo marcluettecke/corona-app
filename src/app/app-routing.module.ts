@@ -12,7 +12,7 @@ const routes: Routes = [
 	{ path: 'visualization', component: VisualizationComponent },
 	{ path: 'log-in', component: LogInComponent },
 	{ path: 'sign-up', component: SignUpComponent },
-	{ path: '', redirectTo: '/summary', pathMatch: 'full' }
+	{ path: '', redirectTo: '/log-in', pathMatch: 'full' }
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
 	selector: 'app-sign-up-form',
@@ -10,7 +11,7 @@ export class SignUpFormComponent implements OnInit {
 	signUpForm: FormGroup;
 	maxDate: Date;
 
-	constructor() {}
+	constructor(private authService: AuthService) {}
 
 	ngOnInit() {
 		this.maxDate = new Date();
@@ -40,6 +41,18 @@ export class SignUpFormComponent implements OnInit {
 	}
 
 	onSubmit() {
-		console.log(this.signUpForm);
+		const userData = this.signUpForm.value;
+		console.log(userData);
+
+		this.authService
+			.registerUser({
+				email: userData.email,
+				password: userData.password,
+				birthdate: userData.birthdate,
+				cities: []
+			})
+			.then(res => {
+				console.log('login successful');
+			});
 	}
 }

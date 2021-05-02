@@ -10,11 +10,12 @@
 		<!-- [opened]="(isHandset$ | async) === false"> -->
 		<mat-toolbar>Menu</mat-toolbar>
 		<mat-nav-list>
-			<a mat-list-item routerLink="/summary">Summary</a>
+			<a *ngIf="isAuth" mat-list-item routerLink="/summary">Summary</a>
 			<a mat-list-item routerLink="/data">Data</a>
-			<a mat-list-item routerLink="/visualization">Visualization</a>
-			<a mat-list-item routerLink="/log-in">Log in</a>
-			<a mat-list-item routerLink="/sign-up">Sign up</a>
+			<a *ngIf="isAuth" mat-list-item routerLink="/visualization">Visualization</a>
+			<a *ngIf="!isAuth" mat-list-item routerLink="/log-in">Log in</a>
+			<a *ngIf="!isAuth" mat-list-item routerLink="/sign-up">Sign up</a>
+			<a *ngIf="isAuth" mat-list-item routerLink="/" (click)="onLogOut()">Logout</a>
 		</mat-nav-list>
 	</mat-sidenav>
 	<mat-sidenav-content>
@@ -31,13 +32,22 @@
 			</button>
 			<span>WeathData</span>
 			<div class="header__links" *ngIf="!(isHandset$ | async)">
-				<a mat-list-item routerLink="/summary" routerLinkActive="mat-accent">Summary</a>
+				<a *ngIf="isAuth" mat-list-item routerLink="/summary" routerLinkActive="mat-accent"
+					>Summary</a
+				>
 				<a mat-list-item routerLink="/data" routerLinkActive="mat-accent">Data</a>
-				<a mat-list-item routerLink="/visualization" routerLinkActive="mat-accent"
+				<a
+					*ngIf="isAuth"
+					mat-list-item
+					routerLink="/visualization"
+					routerLinkActive="mat-accent"
 					>Visualization</a
 				>
-				<a mat-list-item routerLink="/log-in">Log in</a>
-				<a mat-list-item routerLink="/sign-up">Sign up</a>
+				<a *ngIf="!isAuth" mat-list-item routerLink="/log-in">Log in</a>
+				<a *ngIf="!isAuth" mat-list-item routerLink="/sign-up">Sign up</a>
+				<li *ngIf="isAuth">
+					<a style="cursor: pointer" routerLink="/" (click)="onLogOut()">Logout</a>
+				</li>
 			</div>
 		</mat-toolbar>
 		<router-outlet (click)="drawer.close()"></router-outlet>
