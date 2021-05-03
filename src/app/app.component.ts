@@ -23,13 +23,9 @@ export class AppComponent implements OnInit {
 	constructor(private breakpointObserver: BreakpointObserver, private authService: AuthService) {}
 
 	ngOnInit(): void {
-		// this.authService.initAuthListener();
 		this.authSubscription = this.authService.authChange.subscribe(authStatus => {
 			this.isAuth = authStatus;
-			console.log(this.isAuth);
 		});
-		//Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-		//Add 'implements OnInit' to the class.
 	}
 
 	onLogOut() {

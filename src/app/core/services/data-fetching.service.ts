@@ -1,17 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { forkJoin, Observable, throwError, of, Subject, Subscription } from 'rxjs';
-import { catchError, mergeMap, tap } from 'rxjs/operators';
+import {
+	AngularFirestore,
+	AngularFirestoreCollection,
+	DocumentReference
+} from '@angular/fire/firestore';
+import { Observable, throwError, Subject, Subscription } from 'rxjs';
+import { catchError, tap, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 import { WeatherData } from '../interfaces/weatherData.model';
 import { User } from '../interfaces/user.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class DataFetchingService {
+	private userRef: DocumentReference;
+	private singleUser: User;
 	cities: string[];
 	citiesChanged = new Subject<User[]>();
 	testCities: Observable<string[]>;
@@ -28,7 +35,11 @@ export class DataFetchingService {
 			tap(data => console.log(data), catchError(this.handleError))
 		);
 
-	constructor(private http: HttpClient, private db: AngularFirestore) {
+	constructor(
+		private http: HttpClient,
+		private db: AngularFirestore,
+		private authService: AuthService
+	) {
 		this.cities = [];
 		// this.cities = ['Landau', 'Cologne', 'Munich', 'Tokyo', 'Sydney', 'New York'];
 	}
@@ -37,6 +48,25 @@ export class DataFetchingService {
 		return this.http.get<string>('../../../assets/data/cities_clean.txt', {
 			responseType: 'text' as 'json'
 		});
+	}
+
+	async getSingleUser() {
+		const snapshotResult = await this.db
+			.collection('users', ref =>
+				ref.where('email', '==', this.authService.loggedInUserEmail).limit(1)
+			)
+			.snapshotChanges()
+			.pipe(mergeMap(users => users));
+		snapshotResult.subscribe(doc => {
+			this.singleUser = <User>doc.payload.doc.data();
+			this.userRef = doc.payload.doc.ref;
+			// console.log(this.singleUser);
+		});
+	}
+
+	addCity(newCity: string) {
+		this.singleUser.cities?.push(newCity);
+		this.userRef.update(this.singleUser);
 	}
 
 	fetchCities(email: string): Observable<User[]> {
@@ -67,10 +97,6 @@ export class DataFetchingService {
 		cleanData.main.feels_like = +data.main.feels_like.toFixed(0);
 		// console.log(cleanData);
 		return cleanData;
-	}
-
-	addCity(city: string) {
-		// this.cities.push(city);
 	}
 
 	private handleError(err: any): Observable<never> {

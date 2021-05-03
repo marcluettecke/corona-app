@@ -8,6 +8,7 @@ import { User } from 'src/app/core/interfaces/user.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
 import Swal from 'sweetalert2';
 import { mergeMap } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
 	selector: 'app-data-table',
@@ -33,7 +34,7 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 
-	constructor(private dataservice: DataFetchingService) {}
+	constructor(private dataservice: DataFetchingService, private authService: AuthService) {}
 
 	ngOnInit() {
 		this.dataSource.sortingDataAccessor = (item: WeatherData, property: string) => {
@@ -56,7 +57,8 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 		};
 
 		this.userCitiesChangedSubscription = this.dataservice
-			.fetchCities('marc.luettecke1@gmail.com')
+			// .fetchCities('marc.luettecke1@gmail.com')
+			.fetchCities(this.authService.loggedInUserEmail!)
 			.subscribe((data: User[]) => {
 				data.map((el: User) => {
 					this.cities.push(...el.cities!);
@@ -75,6 +77,7 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(data => {
 				this.dataSource.data = data;
 			});
+		this.dataservice.getSingleUser();
 	}
 
 	ngAfterViewInit() {
@@ -101,5 +104,6 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngOnDestroy() {
 		this.allCitiesChangedSubscription.unsubscribe();
 		this.userCitiesChangedSubscription.unsubscribe();
+		// this.authSubscription.unsubscribe();
 	}
 }
