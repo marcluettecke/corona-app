@@ -12,7 +12,6 @@
 		<mat-nav-list>
 			<a *ngIf="isAuth" mat-list-item routerLink="/summary">Summary</a>
 			<a *ngIf="isAuth" mat-list-item routerLink="/data">Data</a>
-			<!-- <a *ngIf="isAuth" mat-list-item routerLink="/visualization">Visualization</a> -->
 			<a *ngIf="!isAuth" mat-list-item routerLink="/log-in">Log in</a>
 			<a *ngIf="!isAuth" mat-list-item routerLink="/sign-up">Sign up</a>
 			<a *ngIf="isAuth" mat-list-item routerLink="/" (click)="onLogOut()">Logout</a>
@@ -38,13 +37,7 @@
 				<a *ngIf="isAuth" mat-list-item routerLink="/data" routerLinkActive="mat-accent"
 					>Data</a
 				>
-				<!-- <a
-					*ngIf="isAuth"
-					mat-list-item
-					routerLink="/visualization"
-					routerLinkActive="mat-accent"
-					>Visualization</a
-				> -->
+
 				<a *ngIf="!isAuth" mat-list-item routerLink="/log-in">Log in</a>
 				<a *ngIf="!isAuth" mat-list-item routerLink="/sign-up">Sign up</a>
 				<a *ngIf="isAuth" style="cursor: pointer" routerLink="/" (click)="onLogOut()"

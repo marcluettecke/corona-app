@@ -40,11 +40,11 @@
 		<mat-cell *matCellDef="let element">{{ element.main.humidity }}</mat-cell>
 	</ng-container>
 	<ng-container matColumnDef="add">
-		<mat-header-cell *matHeaderCellDef>Add to Summary</mat-header-cell>
+		<mat-header-cell *matHeaderCellDef>Edit Summary</mat-header-cell>
 		<mat-cell *matCellDef="let row">
 			<button mat-icon-button (click)="onAddCityClick(row)" color="primary">
 				<mat-icon *ngIf="!cities.includes(row.name); else elseBlock">add_circle</mat-icon>
-				<ng-template #elseBlock><mat-icon>check</mat-icon></ng-template>
+				<ng-template #elseBlock><mat-icon>delete</mat-icon></ng-template>
 			</button>
 		</mat-cell>
 	</ng-container>

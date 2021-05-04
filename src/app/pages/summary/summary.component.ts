@@ -1,5 +1,5 @@
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { forkJoin, Observable, of, Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { forkJoin, Observable, Subscription } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { Router } from '@angular/router';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
@@ -16,6 +16,8 @@ export class SummaryComponent implements OnInit, OnDestroy {
 	WeatherData$: Observable<WeatherData[]>;
 	cities: string[];
 	responseList: WeatherData[];
+	responseList2: WeatherData[];
+	coordinates: { name: string; lat: number; lon: number }[] = [];
 	private dataFetchingSubscription: Subscription;
 
 	constructor(

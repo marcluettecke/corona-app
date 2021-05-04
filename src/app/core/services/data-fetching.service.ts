@@ -5,7 +5,7 @@ import {
 	AngularFirestoreCollection,
 	DocumentReference
 } from '@angular/fire/firestore';
-import { Observable, throwError, Subject, Subscription } from 'rxjs';
+import { Observable, throwError, Subject, Subscription, BehaviorSubject } from 'rxjs';
 import { catchError, tap, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
@@ -20,7 +20,7 @@ export class DataFetchingService {
 	private userRef: DocumentReference;
 	private singleUser: User;
 	cities: string[];
-	citiesChanged = new Subject<User[]>();
+	citiesChanged = new BehaviorSubject<boolean>(false);
 	testCities: Observable<string[]>;
 	weatherDataChanged = new Subject<WeatherData[]>();
 
@@ -67,6 +67,17 @@ export class DataFetchingService {
 	addCity(newCity: string) {
 		this.singleUser.cities?.push(newCity);
 		this.userRef.update(this.singleUser);
+		this.citiesChanged.next(true);
+	}
+
+	deleteCity(deletedCity: string) {
+		console.log(this.singleUser.cities);
+		const index = this.singleUser.cities!.indexOf(deletedCity);
+		if (index > -1) {
+			this.singleUser.cities!.splice(index, 1);
+		}
+		this.citiesChanged.next(true);
+		this.userRef.update(this.singleUser);
 	}
 
 	fetchCities(email: string): Observable<User[]> {
@@ -84,6 +95,15 @@ export class DataFetchingService {
 			)
 			.pipe(catchError(this.handleError));
 	}
+
+	// getWeatherCityForecast(lat: number, lon: number): Observable<WeatherData> {
+	// 	return this.http
+	// 		.get<WeatherData>(
+	// 			`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&appid=${environment.apiKey}`
+	// 			// `http://api.openweathermap.org/data/2.5/onecall?q=${city}&exclude=current,minutely,hourly,alerts&units=metric&appid=${environment.apiKey}`
+	// 		)
+	// 		.pipe(catchError(this.handleError));
+	// }
 
 	getDummyWeatherData() {
 		return this.http.get('../../../assets/data/data_dummy.json');

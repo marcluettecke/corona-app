@@ -55,15 +55,15 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 					return item.main.temp;
 			}
 		};
-
-		this.userCitiesChangedSubscription = this.dataservice
-			// .fetchCities('marc.luettecke1@gmail.com')
-			.fetchCities(this.authService.loggedInUserEmail!)
-			.subscribe((data: User[]) => {
-				data.map((el: User) => {
-					this.cities.push(...el.cities!);
+		this.dataservice.citiesChanged.subscribe(_ => {
+			this.userCitiesChangedSubscription = this.dataservice
+				.fetchCities(this.authService.loggedInUserEmail!)
+				.subscribe((data: User[]) => {
+					data.map((el: User) => {
+						this.cities.push(...el.cities!);
+					});
 				});
-			});
+		});
 		this.allCitiesChangedSubscription = this.dataservice
 			.fetchCities('all_cities')
 			.pipe(
@@ -91,19 +91,42 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	onAddCityClick(row: WeatherData) {
 		if (this.cities.includes(row.name)) {
-			Swal.fire(
-				'Cannot add city!',
-				'You have already included the city in your summary, check it out!',
-				'error'
-			);
+			Swal.fire({
+				title: 'Are you sure to delete the city from your list?',
+				showDenyButton: true,
+				showCancelButton: true,
+				confirmButtonText: `Delete`,
+				denyButtonText: `Don't delete`
+			}).then(result => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					Swal.fire('Deleted!', '', 'success');
+					this.dataservice.deleteCity(row.name);
+				} else if (result.isDenied) {
+					Swal.fire('City not deleted - list is unchanged', '', 'info');
+				}
+			});
 		} else {
-			this.dataservice.addCity(row.name);
+			Swal.fire({
+				title: 'Do you want to add the city?',
+				showDenyButton: true,
+				showCancelButton: true,
+				confirmButtonText: `Add`,
+				denyButtonText: `Don't add`
+			}).then(result => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					Swal.fire('Added!', '', 'success');
+					this.dataservice.addCity(row.name);
+				} else if (result.isDenied) {
+					Swal.fire('City was not added', '', 'info');
+				}
+			});
 		}
 	}
 
 	ngOnDestroy() {
 		this.allCitiesChangedSubscription.unsubscribe();
 		this.userCitiesChangedSubscription.unsubscribe();
-		// this.authSubscription.unsubscribe();
 	}
 }

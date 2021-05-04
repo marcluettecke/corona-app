@@ -44,15 +44,11 @@ export class SignUpFormComponent implements OnInit {
 		const userData = this.signUpForm.value;
 		console.log(userData);
 
-		this.authService
-			.registerUser({
-				email: userData.email,
-				password: userData.password,
-				birthdate: userData.birthdate,
-				cities: []
-			})
-			.then(res => {
-				console.log('login successful');
-			});
+		this.authService.registerUser({
+			email: userData.email,
+			password: userData.password,
+			birthdate: userData.birthdate,
+			cities: []
+		});
 	}
 }

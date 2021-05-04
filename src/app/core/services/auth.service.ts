@@ -4,6 +4,7 @@ import { User } from '../interfaces/user.model';
 import { AuthData } from '../interfaces/authData';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,7 +17,9 @@ export class AuthService {
 	constructor(private db: AngularFirestore, private router: Router) {}
 
 	registerUser(user: User) {
-		return this.db.collection('users').add(user);
+		this.db.collection('users').add(user);
+		Swal.fire("You're successfully registered!", '', 'success');
+		this.logIn({ email: user.email, password: user.password });
 	}
 
 	logIn(authData: AuthData) {
