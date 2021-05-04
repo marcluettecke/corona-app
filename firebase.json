@@ -1,8 +1,8 @@
 {
 	"hosting": [
 		{
-			"target": "weather-app",
-			"public": "docs/weather-app",
+			"target": "weatherApp",
+			"public": "docs/weatherApp",
 			"ignore": ["**/.*"],
 			"headers": [
 				{
