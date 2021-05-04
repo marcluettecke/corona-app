@@ -36,7 +36,6 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		this.isMobile = window.innerWidth <= 768;
-		console.log(window.innerWidth);
 
 		if (this.isMobile) {
 			this.displayedColumns = ['dt', 'name', 'temp', 'temp_min', 'temp_max', 'add'];
