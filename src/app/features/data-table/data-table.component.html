@@ -27,18 +27,21 @@
 		<mat-cell *matCellDef="let element">{{ element.main.temp_max }}</mat-cell>
 	</ng-container>
 
-	<ng-container matColumnDef="wind_speed">
+	<ng-container *ngIf="!isMobile" matColumnDef="wind_speed">
 		<mat-header-cell *matHeaderCellDef mat-sort-header>Wind Speed</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.wind.speed }}</mat-cell>
 	</ng-container>
-	<ng-container matColumnDef="pressure">
+
+	<ng-container *ngIf="!isMobile" matColumnDef="pressure">
 		<mat-header-cell *matHeaderCellDef mat-sort-header>Pressure</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.main.pressure }}</mat-cell>
 	</ng-container>
-	<ng-container matColumnDef="humidity">
+
+	<!-- <ng-container *ngIf="!isMobile" (window:resize)="onResize($event)" matColumnDef="humidity">
 		<mat-header-cell *matHeaderCellDef mat-sort-header>Humidity</mat-header-cell>
 		<mat-cell *matCellDef="let element">{{ element.main.humidity }}</mat-cell>
-	</ng-container>
+	</ng-container> -->
+
 	<ng-container matColumnDef="add">
 		<mat-header-cell *matHeaderCellDef>Edit Summary</mat-header-cell>
 		<mat-cell *matCellDef="let row">

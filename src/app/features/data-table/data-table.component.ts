@@ -1,13 +1,20 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+	HostListener
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, fromEvent, Observable, timer } from 'rxjs';
 import { WeatherData } from 'src/app/core/interfaces/weatherData.model';
 import { User } from 'src/app/core/interfaces/user.model';
 import { DataFetchingService } from 'src/app/core/services/data-fetching.service';
 import Swal from 'sweetalert2';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, debounce, map, startWith } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -17,26 +24,35 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class DataTableComponent implements OnInit, AfterViewInit, OnDestroy {
 	cities: string[] = [];
-	displayedColumns = [
-		'dt',
-		'name',
-		'temp',
-		'temp_min',
-		'temp_max',
-		'wind_speed',
-		'pressure',
-		'humidity',
-		'add'
-	];
+	isMobile: boolean;
 	private allCitiesChangedSubscription: Subscription;
 	private userCitiesChangedSubscription: Subscription;
 	dataSource = new MatTableDataSource<WeatherData>();
 	@ViewChild(MatSort, { static: true }) sort: MatSort;
 	@ViewChild(MatPaginator) paginator: MatPaginator;
+	displayedColumns: string[];
 
 	constructor(private dataservice: DataFetchingService, private authService: AuthService) {}
 
 	ngOnInit() {
+		this.isMobile = window.innerWidth <= 768;
+		console.log(window.innerWidth);
+
+		if (this.isMobile) {
+			this.displayedColumns = ['dt', 'name', 'temp', 'temp_min', 'temp_max', 'add'];
+		} else {
+			this.displayedColumns = [
+				'dt',
+				'name',
+				'temp',
+				'temp_min',
+				'temp_max',
+				'wind_speed',
+				'pressure',
+				'add'
+			];
+		}
+
 		this.dataSource.sortingDataAccessor = (item: WeatherData, property: string) => {
 			switch (property) {
 				case 'temp':
