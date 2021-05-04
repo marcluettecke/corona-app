@@ -26,14 +26,14 @@ export class DataFetchingService {
 
 	data: Observable<WeatherData[]>;
 	// weatherData$ = this.http.get<WeatherData>(`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}&units=metric`).pipe(
-	weatherData$ = this.http
-		.get<WeatherData>(
-			`http://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}`
-		)
-		.pipe(
-			// tap(data => console.log(JSON.stringify(data)),
-			tap(data => console.log(data), catchError(this.handleError))
-		);
+	// weatherData$ = this.http
+	// 	.get<WeatherData>(
+	// 		`https://api.openweathermap.org/data/2.5/weather?q=Munich&appid=${environment.apiKey}`
+	// 	)
+	// 	.pipe(
+	// 		// tap(data => console.log(JSON.stringify(data)),
+	// 		tap(data => console.log(data), catchError(this.handleError))
+	// 	);
 
 	constructor(
 		private http: HttpClient,
@@ -91,7 +91,7 @@ export class DataFetchingService {
 	getWeatherCity(city: string): Observable<WeatherData> {
 		return this.http
 			.get<WeatherData>(
-				`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${environment.apiKey}`
+				`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${environment.apiKey}`
 			)
 			.pipe(catchError(this.handleError));
 	}

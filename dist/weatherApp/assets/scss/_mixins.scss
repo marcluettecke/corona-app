@@ -1,0 +1,30 @@
+// Small devices
+@import '_variables';
+
+@mixin sm {
+  @media (max-width: #{$bp-small}) {
+      @content;
+  }
+}
+
+// Medium devices
+@mixin md {
+  @media screen and(max-width: #{$bp-medium}) {
+      @content;
+  }
+}
+
+// Large devices
+@mixin lg {
+  @media screen and(max-width: #{$bp-large}) {
+      @content;
+  }
+}
+
+// Extra large devices
+@mixin xl {
+  @media screen and(max-width: #{$bp-largest}) {
+      @content;
+  }
+}
+
